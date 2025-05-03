@@ -79,7 +79,8 @@ make migrate
 
 ```json
 {
-  "product_name": "ginger_powder"
+  "product_SKU": "SKU001",
+  "days" : 30
 }
 ```
 
@@ -87,13 +88,26 @@ make migrate
 
 ```json
 {
-  "product": "ginger_powder",
-  "current_stock": 120,
-  "forecasted_demand_next_30_days": 240,
-  "stock_shortfall": 120,
-  "daily_predictions": [
-    { "date": "2025-05-02", "predicted": 7.3 },
-    ...
+    "product_SKU": "SKU001",
+    "current_stock": 10000,
+    "average_forecasted_demand": 14608.27,
+    "maximum_forecast": 16425.71,
+    "minimum_forecast": 12764.46,
+    "stock_shortfall": 4608.27,
+    "daily_predictions": [
+        {
+            "date": "2025-05-03",
+            "predicted": 593.5,
+            "lower_bound": 530.5,
+            "upper_bound": 651.77
+        },
+        {
+            "date": "2025-05-04",
+            "predicted": 635.67,
+            "lower_bound": 575.94,
+            "upper_bound": 697.32
+        },
+        ...
   ]
 }
 ```
@@ -115,7 +129,7 @@ make migrate
 The service calls the external warehouse API:
 
 ```REST
-GET http://warehouse-service/api/stock/<product_name>/
+GET http://warehouse-service/api/stock/<product_SKU>/
 → Expected response: { "current_stock": 120 }
 ```
 
@@ -137,9 +151,3 @@ def prepare_features(df):
 ```
 
 ---
-
-## 🧼 Linting and Best Practices
-
-- Keep views thin — logic should stay in `forecast_runner.py`
-- Avoid public access to the `.joblib` model files
-- Use DRF (Django REST Framework) for extensible APIs
