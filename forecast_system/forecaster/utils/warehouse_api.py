@@ -1,6 +1,7 @@
+import os
 import requests
 
-WAREHOUSE_API_BASE = "http://localhost:8001/api/product"
+WAREHOUSE_API_BASE = os.getenv("WAREHOUSE_SERVICE", "http://localhost:8001/api/product")
 
 def get_current_stock(product_SKU: str) -> int:
     try:

@@ -3,12 +3,16 @@ version: '3.9'
 services:
   forecasting-app:
     build: .
-    container_name: forecasting_app
+    container_name: forecasting-app
     ports:
       - "${HOST_PORT:-8000}:8000"
     env_file:
       - .env
-    volumes:
-      - .:/app
     working_dir: /app/forecast_system
     restart: unless-stopped
+    networks:
+      - scms
+networks:
+  scms:
+    name: scms-network
+    external: true
